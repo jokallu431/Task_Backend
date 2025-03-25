@@ -16,14 +16,14 @@ export class UsersService {
             name:dto.name,
             email:dto.email,
             phoneNo:dto.phoneNo
-          });
+        });
+        console.log("user Created",user);
           return user.save();
     }
 
     async getUser(): Promise<user[]>{
         const user = this.userModel.find({});
         console.log("All users",user);
-        
         return user.find();
     }
     

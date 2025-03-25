@@ -10,7 +10,6 @@ export class UsersController {
     @Post()
     create(@Body() dto:UserDto){
         const data = this.userService.addUser(dto);
-        console.log(data);
         return data;
     }
 
