@@ -23,7 +23,6 @@ export class UsersService {
 
     async getUser(): Promise<user[]>{
         const user = this.userModel.find({});
-        console.log("All users",user);
         return user.find();
     }
     

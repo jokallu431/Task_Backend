@@ -7,7 +7,7 @@ async function bootstrap() {
   // await app.listen(process.env.PORT ?? 3000);
 
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('User Detail Application')
     .setDescription('User Detail API Description')

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './users.dto';
 
@@ -8,6 +8,7 @@ export class UsersController {
     constructor(private readonly userService:UsersService){};
 
     @Post()
+    @HttpCode(201)
     create(@Body() dto:UserDto){
         const data = this.userService.addUser(dto);
         return data;
