@@ -12,18 +12,18 @@ export class UsersService {
     constructor(@InjectModel(user.name) private userModel: Model<userDocument>) {}
 
     async addUser(dto:UserDto): Promise<user> {
-        const user = new this.userModel({
-            name:dto.name,
-            email:dto.email,
-            phoneNo:dto.phoneNo
-        });
-        console.log("user Created",user);
-          return user.save();
-    }
+            const user = new this.userModel({
+                name:dto.name,
+                email:dto.email,
+                phoneNo:dto.phoneNo
+            });
+            console.log("user Created",user);
+              return user.save();
+        }
 
     async getUser(): Promise<user[]>{
-        const user = this.userModel.find({});
-        return user.find();
+        const user = await this.userModel.find({});
+        return user;
     }
     
     async getUserById(id:string): Promise<user>{
