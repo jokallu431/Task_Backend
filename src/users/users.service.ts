@@ -11,18 +11,26 @@ import { error } from 'console';
 export class UsersService {
     constructor(@InjectModel(user.name) private userModel: Model<userDocument>) {}
 
-    async addUser(dto:UserDto): Promise<user> {
-            const user = new this.userModel({
+    async addUser(dto:UserDto):Promise<user|null> {
+        const existingUser = await this.userModel.findOne({ 
+            $or: [{ email: dto.email }, { phoneNo: dto.phoneNo }] 
+        });
+        if(existingUser){
+            return null
+        }
+        const user = new this.userModel({
                 name:dto.name,
                 email:dto.email,
                 phoneNo:dto.phoneNo
             });
-            console.log("user Created",user);
-              return user.save();
-        }
+    return user.save();
+    }
 
-    async getUser(): Promise<user[]>{
+    async getUser(): Promise<user[]|null>{
         const user = await this.userModel.find({});
+        if(!user){
+            return null;
+        }
         return user;
     }
     
