@@ -6,23 +6,23 @@ export class UserDto {
 
     @ApiProperty({
         description: 'Name',
-        example:'Joshua',
+        example: 'Joshua',
         required: true,
     })
-    name ?: string;
+    name?: string;
 
 
     @ApiProperty({
         description: 'Email',
-        example:'Joshua@gmail.com',
+        example: 'Joshua@gmail.com',
         required: true,
     })
-    email ?: string;
+    email?: string;
 
     @ApiProperty({
         description: 'Phone No',
-        example:'9921364821',
+        example: '9921364821',
         required: true,
     })
-    phoneNo ?: string;
+    phoneNo?: string;
 }
