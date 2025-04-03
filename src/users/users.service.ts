@@ -26,7 +26,7 @@ export class UsersService {
             });
     return user.save();
         }catch (error) {
-            console.error("Error adding user:", error);
+            console.log(error)
             throw new Error("An error occurred while creating the user. Please try again later.");
         }
     }
@@ -39,7 +39,7 @@ export class UsersService {
         }
         return user;
     } catch (error) {
-        console.error("Error fetching users:", error);
+        console.log(error)
         throw new Error("An error occurred while fetching users. Please try again later.");
     }
     }
@@ -47,38 +47,39 @@ export class UsersService {
     async getUserById(id:string): Promise<user>{
         try{
         const userList = await this.userModel.findById(id);
-        console.log("One user",userList);
         if(!userList){
             throw new error("User Not Found ");
         }
         return userList;
     } catch (error) {
-        console.error("Error fetching user by ID:", error);
-        throw new Error(error.message || "An error occurred while fetching the user.");
+        console.log(error)
+        throw new Error("An error occurred while fetching the user.");
     }
     }
 
-    async updateUserById(id:string,dto:UserDto): Promise<user>{
+    async updateUserById(id:string,dto:UserDto): Promise<user|null>{
+        try{
         const userList = await this.userModel.findByIdAndUpdate(id,dto,{new:true});
-
-        console.log("One user",userList);
         if(!userList){
             throw new error("User Not Found ");
         }
         return userList;
+    }catch(error){
+        console.log(error)
+        throw new Error("An error occurred while Updating the user.");
+    }
     }
 
     async deleteUserById(id:string): Promise<user>{
     try{
         const userList = await this.userModel.findByIdAndDelete(id);
-        console.log("One user",userList);
         if(!userList){
             throw new error("User Not Found ");
         }
         return userList;
     } catch (error) {
-        console.error("Error deleting user by ID:", error);
-        throw new Error(error.message || "An error occurred while deleting the user.");
+        console.log(error);
+        throw new Error("An error occurred while deleting the user.");
     }
     }
 }
