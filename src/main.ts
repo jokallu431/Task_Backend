@@ -7,15 +7,7 @@ async function bootstrap() {
   // await app.listen(process.env.PORT ?? 3000);
 
   const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    origin: [
-      'https://127.0.0.1:3000/',
-      'https://localhost:3000/',
-      'https://task-backend-chi-ten.vercel.app/',
-    ],
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    credentials: true,
-  });
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('User Detail Application')
     .setDescription('User Detail API Description')
