@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -5,6 +8,7 @@ import { Model } from 'mongoose';
 import { user, userDocument } from './users.schema';
 import { UserDto } from './users.dto';
 import { error } from 'console';
+import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
@@ -19,10 +23,12 @@ export class UsersService {
             if (existingUser) {
                 return null
             }
+            const hashPassword = await bcrypt.hash(dto.password, 10);
             const user = new this.userModel({
                 name: dto.name,
                 email: dto.email,
-                phoneNo: dto.phoneNo
+                phoneNo: dto.phoneNo,
+                password: hashPassword,
             });
             return user.save();
         } catch (error) {
@@ -44,7 +50,7 @@ export class UsersService {
         }
     }
 
-    async getUserById(id: string): Promise<user> {
+    async getUserById(id: string): Promise<user | null> {
         try {
             const userList = await this.userModel.findById(id);
             if (!userList) {
@@ -57,6 +63,11 @@ export class UsersService {
         }
     }
 
+    async findByEmail(email:string): Promise<user | null> {
+            const userList = await this.userModel.findOne({email:email});
+            return userList;
+    }
+
     async updateUserById(id: string, dto: UserDto): Promise<user | null> {
         try {
             const userList = await this.userModel.findByIdAndUpdate(id, dto, { new: true });
@@ -65,7 +76,7 @@ export class UsersService {
             }
             return userList;
         } catch (error) {
-            console.log(error)
+            console.log(error);
             throw new Error("An error occurred while Updating the user.");
         }
     }
