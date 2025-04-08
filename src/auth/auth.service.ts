@@ -25,9 +25,12 @@ export class AuthService {
         }
         // Create a payload with user details. You might want to include additional details like permissions.
         const payload = {
+          userId: user.id,
           user_name: user.name,
           phoneNo: user.phoneNo,
         };
+        console.log("payload",payload);
+        
         const token =  {token : await this.jwtService.signAsync(payload),}
         return token;
       }

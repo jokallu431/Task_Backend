@@ -28,6 +28,7 @@ import {
           token
         );
         request['user'] = payload;
+        console.log("payload in guard",payload);
       } catch {
         throw new UnauthorizedException();
       }

@@ -12,14 +12,16 @@ import {
         Param, 
         Patch, 
         Post,
+        Request,
         Res,
+        UnauthorizedException,
         UseGuards 
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './users.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-
-
+import * as jwt from 'jsonwebtoken';
+ 
 @Controller('users')
 export class UsersController {
     constructor(private readonly userService: UsersService) { };
@@ -56,14 +58,31 @@ export class UsersController {
 
     @UseGuards(AuthGuard)
     @Patch(':id')
-    updateById(@Param('id') id: string, @Body() dto: UserDto) {
+    updateById(@Request() req ,@Param('id') id: string, @Body() dto: UserDto  ) {
+        console.log('Authorization Header:', req.headers.authorization);  
+        const userIdFromToken = req.user?.userId;
+        if (!userIdFromToken) {
+            throw new UnauthorizedException('User not found in token');
+        }
+        if (userIdFromToken !== id) {
+          throw new UnauthorizedException('You are not authorized to update this user');
+        }
         const data = this.userService.updateUserById(id, dto);
         return data;
     }
 
     @UseGuards(AuthGuard)
     @Delete(':id')
-    deleteById(@Param('id') id: string) {
+    deleteById(@Request() req, @Param('id') id: string) {
+        console.log('Authorization Header:', req.headers.authorization);
+        const userIdFromToken = req.user?.userId; // Extract userId from the token payload
+    
+        if (!userIdFromToken) {
+            throw new UnauthorizedException('User not found in token');
+        }
+        if (userIdFromToken !== id) {
+            throw new UnauthorizedException('You are not authorized to delete this user');
+        }
         const data = this.userService.deleteUserById(id);
         return data;
     }
