@@ -1,8 +1,8 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable prettier/prettier */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { AuthDto } from './auth.dto';
@@ -14,7 +14,7 @@ export class AuthService {
                 private jwtService: JwtService
     ) {}
 
-    async validateUserPassword(dto: AuthDto): Promise<{ access_token: string }> {
+    async validateUserPassword(dto: AuthDto): Promise<{token:string}> {
         const user = await this.userService.findByEmail(dto.email);
         if (!user) {
           throw new UnauthorizedException('User not found');
@@ -28,9 +28,8 @@ export class AuthService {
           user_name: user.name,
           phoneNo: user.phoneNo,
         };
-        return {
-          access_token: await this.jwtService.signAsync(payload),
-        };
+        const token =  {token : await this.jwtService.signAsync(payload),}
+        return token;
       }
 }
 async function decrpyt(password: string, hash: string) {

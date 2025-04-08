@@ -22,6 +22,6 @@ export class AuthController {
         if (!token) {
             throw new UnauthorizedException('Invalid credentials');
         }
-        return { token };
+        return token ;
     }
 }
