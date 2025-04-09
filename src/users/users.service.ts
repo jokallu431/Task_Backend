@@ -65,28 +65,23 @@ export class UsersService {
 
     async findByEmail(email:string): Promise<user | null> {
             const userList = await this.userModel.findOne({email:email});
-            console.log("userList",userList);
             return userList;
     }
 
     async updateUserById(id: string, dto: UserDto): Promise<user | null> {
-        try {
+
             const userList = await this.userModel.findByIdAndUpdate(id, dto, { new: true });
             if (!userList) {
-                throw new error("User Not Found ");
+                throw new Error("User Not Found ");
             }
             return userList;
-        } catch (error) {
-            console.log(error);
-            throw new Error("An error occurred while Updating the user.");
-        }
     }
 
     async deleteUserById(id: string): Promise<user> {
         try {
             const userList = await this.userModel.findByIdAndDelete(id);
             if (!userList) {
-                throw new error("User Not Found ");
+                throw new Error("User Not Found ");
             }
             return userList;
         } catch (error) {

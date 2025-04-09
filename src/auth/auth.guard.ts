@@ -1,7 +1,7 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable prettier/prettier */
 import {
     CanActivate,
     ExecutionContext,
@@ -18,8 +18,6 @@ import {
     async canActivate(context: ExecutionContext): Promise<boolean> {
       const request = context.switchToHttp().getRequest();
       const token = this.extractTokenFromHeader(request);
-      console.log(token);
-      
       if (!token) {
         throw new UnauthorizedException();
       }
@@ -28,7 +26,6 @@ import {
           token
         );
         request['user'] = payload;
-        console.log("payload in guard",payload);
       } catch {
         throw new UnauthorizedException();
       }
